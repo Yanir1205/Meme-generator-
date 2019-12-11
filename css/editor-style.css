@@ -1,0 +1,125 @@
+html {
+    Color: #606060;
+    Line-height: 1.25
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+header {
+    background: orange;
+    height: 130px;
+    color: #fff;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.logo {
+    flex: 1;
+}
+
+.nav-buttons li a {
+    display: flex;
+    width: 7rem;
+    justify-content: center;
+    height: 130px;
+    align-items: center;
+}
+
+.nav-buttons li {
+    border-left: 1px solid #1e1e1e;
+    display: flex;
+    align-items: center;
+}
+
+.nav-buttons li:last-child {
+    border-right: 1px solid #1e1e1e;
+}
+
+.search-input {
+    margin-right: 100px;
+}
+
+.keyword {
+    margin-right: 50px;
+}
+
+.canvas-container {
+    background-color: lightgoldenrodyellow;
+    padding: 10px;
+    height: 100%;
+}
+
+.my-canvas {
+    margin: 20px auto;
+    border: 1px solid blue;
+    margin: 0;
+    margin-right: 20px;
+    box-sizing: border-box;
+    width: 500px;
+    height: 500px;
+}
+
+.css-input {
+    padding: 5px;
+    font-size: 16px;
+    border-width: 1px;
+    border-color: #CCCCCC;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-style: solid;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(66, 66, 66, .75);
+    text-shadow: 0px 0px 5px rgba(66, 66, 66, .75);
+}
+
+.css-input:focus {
+    outline: none;
+}
+
+.editor-btn {
+    width: 60px;
+    height: 60px;
+    padding: 0;
+}
+
+.editor-btn img {
+    width: 39px;
+    height: 38px;
+}
+
+/* helpers */
+
+.clean-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.grid {
+    display: grid;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 980px;
+}
+
+.column {
+    flex-direction: column;
+}

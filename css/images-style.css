@@ -1,0 +1,103 @@
+html {
+    Color: #606060;
+    Line-height: 1.25
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+header {
+    background: orange;
+    height: 130px;
+    color: #fff;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.logo {
+    flex: 1;
+}
+
+.images-list {
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+img {
+    width: 150px;
+    border-radius: 10px;
+}
+
+.editor {
+    height: calc(100vh - 130px);
+}
+
+.canvas-container {
+    background-color: lightgoldenrodyellow;
+    padding: 10px;
+    height: 100%;
+}
+
+#my-canvas {
+    margin: 20px auto;
+    border: 1px solid blue;
+    width: 500px;
+    height: 500px;
+    margin: 0;
+}
+
+.clean-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.grid {
+    display: grid;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 980px;
+}
+
+.nav-buttons li a {
+    display: flex;
+    width: 7rem;
+    justify-content: center;
+    height: 130px;
+    align-items: center;
+}
+
+.nav-buttons li {
+    border-left: 1px solid #1e1e1e;
+    display: flex;
+    align-items: center;
+}
+
+.nav-buttons li:last-child {
+    border-right: 1px solid #1e1e1e;
+}
+
+.search-input {
+    margin-right: 100px;
+}
+
+.keyword {
+    margin-right: 50px;
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/editor-style.css">
+    <link rel="stylesheet" href="css/images-style.css">
+    <title>MEME Generator</title>
+</head>
+
+<body onload="init()">
+    <header>
+        <section class="container flex align-center">
+            <div class="logo">MEMEgen</div>
+            <nav class="main-nav flex">
+                <ul class="nav-buttons clean-list flex align-center">
+                    <li>
+                        <a href="#" class="active">Gallery</a>
+                    </li>
+                    <li>
+                        <a href="#">MEMES</a>
+                    </li>
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                </ul>
+            </nav>
+        </section>
+    </header>
+    <main>
+        <div class="image-gallery container" hidden>
+            <div class="search-bar flex">
+                <div class="search-input">
+                    <input type="text" class="search-img-input" placeholder="Search">
+                </div>
+                <div class="keywords-search flex">
+                    <div class="keyword">happy</div>
+                    <div class="keyword">sarcastic</div>
+                    <div class="keyword">funny</div>
+                </div>
+            </div>
+            <div class="images grid">
+                <ul class="images-list grid clean-list">
+                </ul>
+            </div>
+        </div>
+        <div class="editor container">
+            <div class="canvas-container flex">
+                <canvas class="my-canvas" width="500" height="500">
+                    Update your browser to enjoy canvas!
+                </canvas>
+                <div class="controllers-container flex column align-center">
+                    <input type="text" class="css-input text-line" placeholder="Text Line" />
+                    <div class="buttons-1 flex">
+                        <button class="editor-btn toggle-text-lines" onclick="onChangeRow()"><img
+                                src="ICONS/up-and-down-opposite-double-arrows-side-by-side.png"></button>
+                        <button type="submit" class="editor-btn add-text-line" onclick="onAddTextLine()"><img
+                                src="ICONS/add.png"></button>
+                        <button class="editor-btn delete-line" onclick="onDeleteTextLine()"><img
+                                src="ICONS/trash.png"></button>
+                    </div>
+                    <div class="buttons-2 flex">
+                        <input type="color" class="html5colorpicker font-color-picker" onchange="onSetFontColor(event)"
+                            value="#ff0000">
+                        <input type="color" class="html5colorpicker stroke-color-picker"
+                            onchange="onSetStrokeColor(event)" value="#ff0000">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="js/utils.js"></script>
+    <script src="js/i18n-service.js"></script>
+    <script src="js/storageService.js"></script>
+    <script src="js/upload-service.js"></script>
+    <script src="js/images-service.js"></script>
+    <script src="js/meme-service.js"></script>
+    <script src="js/images-controller.js"></script>
+    <script src="js/meme-controller.js"></script>
+</body>
+
+</html>
