@@ -69,6 +69,7 @@ header {
 
 .logo {
     flex: 1;
+    padding-left: 5px;
 }
 
 .images-list {
@@ -206,11 +207,9 @@ h3 {
         height: 100px;
         justify-content: center;
     }
-    
     .images {
         text-align: center;
     }
-
     .nav-buttons {
         display: none;
     }
@@ -229,10 +228,43 @@ h3 {
     visibility: hidden;
     cursor: pointer;
     transition: opacity .5s;
-  }
-  
-  @media (max-width: 740px) {
-    .toggle-menu-screen {
-      display: block;
+}
+
+@media (max-width: 740px) {
+    .toggle-menu-screen.open {
+        display: block;
+        background: rgba(42,42,42,0.8);
+        z-index: 100;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        opacity: 1;
+        visibility: visible;
     }
-  }
+    .nav-buttons.open{
+        transform: translate(0, 0);
+        width: 120px;
+        background: #ff7f00;
+        z-index: 300;
+        top: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        border-left: 1px solid black;
+    }
+    .open a {
+
+    }
+
+    .open li {
+        border-left: none;
+        border-right: none;
+    }
+    .nav-buttons li:last-child {
+        border-right: none;
+    }
+}

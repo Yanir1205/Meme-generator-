@@ -16,8 +16,10 @@ function onImgGalleryClick(imageId) {
 }
 
 function toggleMenu() {
-    var mainMenu = document.getElementById('main-nav');
+    let mainMenu = document.querySelector('.nav-buttons');
     mainMenu.classList.toggle('open');
+    let elToggleScreen = document.querySelector('.toggle-menu-screen');
+    elToggleScreen.classList.toggle('open');
 }
 
 function onGalleryBtnClick() {
