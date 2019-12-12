@@ -5,21 +5,21 @@ var gCanvas;
 var gCtx;
 var gImg;
 
-//coordinates for the next text line to be added
-var gOffsetX;
-var gOffsetY;
-
 //drawing values:
-var gFontSize = 35;
-var gAlign;
-var gStrokeColor = 'blue';
-var gFillColor = 'white';
+var gFontSize = 40;
+var gX; //X value for the text line to be added
+var gY; //Y value for the text line to be added
+var gStrokeColor = '#ff0000';
+var gFillColor = '#ff0000';
 
 function initEditor() {
     gCanvas = document.querySelector('.my-canvas');
     gCtx = gCanvas.getContext('2d');
-    drawImg()
-    renderEditor();
+    gImg = undefined;
+    drawImg();
+    setSelectedTxtIdx(0);
+    setDrawingValues();
+    renderCanvas();
     ////// PART 8 //////
     // resizeCanvas()
 
@@ -37,23 +37,22 @@ function setTextCoordinates(text) {
     //sets the x and y values for the line to be added
     //according to the text width, the canvas sizes and the number of text lines already added
     //x values are always the same - middle of the canvas depending on the text width (font size * text length)
-    gOffsetX = gCanvas.offsetWidth / 2 - ((text.length / 2) * gFontSize);
+    gX = gCanvas.offsetWidth / 2 - ((text.length / 2) * gFontSize);
     // gCtx.textAlign = "center";
     // let currNumOfTextLines = getNumOfTextLines();
     let currNumOfTextLines = getNumOfTextLines();
     if (!currNumOfTextLines || currNumOfTextLines === 0) {
         //if this is the first text line
-        gOffsetY = gFontSize * 2;
+        gY = gFontSize * 2;
     } else if (currNumOfTextLines === 1) {
         //if this is the second text line
-        gOffsetY = gCanvas.height - (gFontSize * 2);
+        gY = gCanvas.height - (gFontSize * 2);
 
         // gOffsetY = gCanvas.offsetHeight - gFontSize * 2;
     } else {
         //if this is the third or more text line
-        gOffsetY = gCanvas.offsetHeight / 2 - (gFontSize / 2);
+        gY = gCanvas.offsetHeight / 2 - (gFontSize / 2);
     }
-    gAlign = gOffsetX;
 }
 
 function drawImg() {
@@ -76,15 +75,141 @@ function drawText(txt, x, y) { //gets the text line to be added and the coordina
 }
 
 function onSetStrokeColor(ev) {
+    let elColor = document.querySelector('.stroke-color-picker');
+    gStrokeColor = elColor.value;
+    setDrawingValues();
+}
 
+function onMoveRowUp() {
+    if (areThereAnyTextLines()) { //only enable movement if there are text lines. otherwise - do nothing
+        //update the model with the new y values. increased by 10 at a time
+        //render the canvas
+        let diff = -10;
+        if (!isExceedingCanvasHeight(diff)) {
+            setTextLineYVal(diff);
+            renderCanvas();
+        }
+    }
+}
+
+function onMoveRowDown() {
+    if (areThereAnyTextLines()) { //only enable movement if there are text lines. otherwise - do nothing
+        //update the model with the new y values. increased by 10 at a time
+        //render the canvas
+        let diff = 10;
+        if (!isExceedingCanvasHeight(diff)) {
+            setTextLineYVal(diff);
+            renderCanvas();
+        }
+    }
+}
+
+function onMoveRowLeft() {
+    if (areThereAnyTextLines()) { //only enable movement if there are text lines. otherwise - do nothing
+        //update the model with the new y values. increased by 10 at a time
+        //render the canvas
+        let diff = -10;
+        if (!isExceedingCanvasWidth(diff)) {
+            setTextLineXVal(diff);
+            renderCanvas();
+        }
+    }
+}
+
+function onMoveRowRight() {
+    if (areThereAnyTextLines()) { //only enable movement if there are text lines. otherwise - do nothing
+        //update the model with the new y values. increased by 10 at a time
+        //render the canvas
+        let diff = 10;
+        if (!isExceedingCanvasWidth(diff)) {
+            setTextLineXVal(diff);
+            renderCanvas();
+        }
+    }
+}
+
+function isExceedingCanvasWidthV1(xDiff) {
+    debugger;
+    let currX = getCurrTxtXVal();
+    //if (font-size * text length + current x values + xDiff) is bigger than the canvas width - it exceeds
+    if ((getCurrTextLine().line.length * getCurrTextLine().fontSize + getCurrTxtXVal() + xDiff + currX) > gCanvas.offsetWidth) {
+        return true;
+    } else if ((currX + xDiff) <= 0) {
+        return true;
+    } else return false;
+}
+
+function isExceedingCanvasWidth(xDiff) {
+    let textLine = getCurrTextLine().line;
+    if ((getCurrTxtXVal() + xDiff) <= 0) return true;
+    else if ((gCtx.measureText(textLine).width + xDiff + getCurrTxtXVal()) > gCanvas.offsetWidth) return true;
+    else return false;
+}
+
+function isExceedingCanvasHeight(yDiff) {
+    let currY = getCurrTxtYVal();
+    if ((currY + yDiff) > gCanvas.offsetHeight) {
+        return true;
+    }
+    else if ((currY + yDiff) < (getCurrTextLine().fontSize + 10)) {
+        return true
+    }
+    else return false;
 }
 
 function onSetFillColor(ev) {
-
+    let elColor = document.querySelector('.fill-color-picker');
+    gFillColor = elColor.value;
+    setDrawingValues();
 }
 
 function onSetFontSize(ev) {
 
+}
+
+function onChangeRow() {
+    //user presses the arrows button - meaning he wants to change the current row for editing
+    //set the selected row to the next (or previous) row
+    //make sure the input box contains the value of the current text line for editing:
+    // get the text from the current selected text index and place it into the input box value
+    if (areThereAnyTextLines()) {
+        changeTextLine(1);
+        let txt = getCurrTextLine();
+        let elInput = document.querySelector('.text-line');
+        elInput.value = txt.line;
+    }
+}
+
+function onDeleteTextLine() {
+    //delete the current text line from the model
+    //reset the input box value to empty string
+    deleteCurrTextLine();
+    clearInputVal();
+    renderCanvas();
+    //move on to the next line
+    onChangeRow();
+}
+
+function onIncreaseFontSize() {
+    //update the font size on the model for the current text line
+    //set drawing new values on the canvas for this line and on
+    //render the canvas
+    let fontSizeDiff = 5;
+    setFontSize(fontSizeDiff);
+    gFontSize += fontSizeDiff;
+    setDrawingValues();
+    renderCanvas();
+}
+
+function onDecreaseFontSize() {
+    //update the font size on the model for the current text line
+    //set drawing new values on the canvas for this line and on
+    //render the canvas
+    let fontSizeDiff = -5;
+    setFontSize(fontSizeDiff);
+    gFontSize += fontSizeDiff;
+    setDrawingValues();
+    renderCanvas();
 }
 
 function resizeCanvas() {
@@ -96,24 +221,47 @@ function resizeCanvas() {
     // TODO: redraw..
 }
 
-function renderEditor() {
-
+function renderCanvas() {
+    //render the image
+    //render all the text lines on top of that image
+    //render all the icons on top of that image
+    drawImg();
+    let texts = getAllTextLines();
+    let tempStrokeColor = gStrokeColor;
+    let tempFillColor = gFillColor;
+    let tempFontSize = gFontSize;
+    texts.forEach(function (txt) {
+        gStrokeColor = txt.strokeColor;
+        gFillColor = txt.fillColor;
+        gFontSize = txt.fontSize;
+        setDrawingValues();
+        drawText(txt.line, txt.x, txt.y);
+    });
+    gStrokeColor = tempStrokeColor;
+    gFillColor = tempFillColor;
+    gFontSize = tempFontSize;
+    //drawIcons();
 }
 
 function onAddTextLine() {
-    //grab the input text value.
-    //if there is no value do nothing (or display message - make input required and prevent the default of refreshing the page)
-    //if there is a value - add it to the model
-    //render the canvas
-    event.preventDefault();
+    //sets the selected text idx to the next line on the model
+    //clear the input box value
+    let currTextLineIdx = getCurrSelectedTxtIdx();
+    setSelectedTxtIdx(currTextLineIdx + 1);
     let elInput = document.querySelector('.text-line');
-    if (elInput.value) {
+    elInput.value = '';
+}
+
+function onTextLineKeyUp() {
+    //update the model with the current input value - get the input value from the input box and asign it to the text line model
+    //render the canvas
+    let elInput = document.querySelector('.text-line');
+    let res = editCurrentTextLine(elInput.value);
+    if (res === false) {
         setTextCoordinates(elInput.value);
-        addTextLine(elInput.value, gFontSize, gAlign, gStrokeColor);
-        setDrawingValues();
-        drawText(elInput.value, gOffsetX, gOffsetY);
-        clearInputVal();
+        addTextLine(elInput.value, gFontSize, gX, gY, gFillColor, gStrokeColor);
     }
+    renderCanvas();
 }
 
 
@@ -121,7 +269,7 @@ function setDrawingValues() {
     //sets all the values before drawing the text on the canvas
     gCtx.font = `${gFontSize}px IMPACT`; //font IMPACT + font size
     gCtx.strokeStyle = gStrokeColor; //text stroke color
-    gCtx.fillStyle = 'white'
+    gCtx.fillStyle = gFillColor;
     gCtx.save();
 }
 
@@ -130,8 +278,7 @@ function clearInputVal() {
     elInput.value = '';
 }
 
-function downloadCanvas(elLink) {
-    const data = gCanvas.toDataURL()
-    elLink.href = data
-    elLink.download = 'my-img.png'
+function onDownloadCanvas(elLink) {
+    const data = gCanvas.toDataURL('image/png');
+    elLink.href = data;
 }

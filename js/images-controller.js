@@ -15,11 +15,27 @@ function onImgGalleryClick(imageId) {
     initEditor();
 }
 
+function toggleMenu() {
+    var mainMenu = document.getElementById('main-nav');
+    mainMenu.classList.toggle('open');
+}
+
+function onGalleryBtnClick() {
+    openGalleryMode();
+    let elPublishBtn = document.querySelector('.publish-btn');
+    elPublishBtn.style.display = 'block';
+    let elShareContainer = document.querySelector('.share-container');
+    elShareContainer.innerHTML = '';
+}
+
 function openEditorMode() {
     let elGalleryDiv = document.querySelector('.image-gallery');
     let elEditorDiv = document.querySelector('.editor');
     elGalleryDiv.hidden = true;
     elEditorDiv.hidden = false;
+    //make gallery button inactive - so that user can press it to go back to the images gallery
+    let elGalleryBtn = document.querySelector('.gallery');
+    elGalleryBtn.classList.remove("active");
 }
 
 function openGalleryMode() {
@@ -27,10 +43,14 @@ function openGalleryMode() {
     let elEditorDiv = document.querySelector('.editor');
     elGalleryDiv.hidden = false;
     elEditorDiv.hidden = true;
+    //make gallery button active again
+    let elGalleryBtn = document.querySelector('.gallery');
+    elGalleryBtn.classList.add("active");
 }
 
 function renderImages() {
     let images = getImagesToRender();
+    renderSearchBar();
     let strHTML = '';
     images.forEach(function (img, imgIdx) {
         strHTML += `<li class="image">\n
@@ -41,22 +61,27 @@ function renderImages() {
     elImgsList.innerHTML = strHTML;
 }
 
-/*
-function renderBooks() {
-    var strHTML = '';
-    var books = getBooksToRender();
-    books.forEach(function (book, bookIdx) {
-        strHTML += `<tr class="${book.bookID}">\n\t<th scope="row">${bookIdx + 1}</th>\n\t`;
-        strHTML += `<td>${book.title}</td>\n`;
-        strHTML += `<td>${book.price}<span data-trans="currency-symbol"></span></td>\n`;
-        strHTML += `<td>${book.rate}</td>\n`;
-        strHTML += `<td><button type="button" class="btn btn-primary read-button-${bookIdx + 1}" data-toggle="modal" data-target="#exampleModalRead" data-trans="table-read" onclick="onRead(${book.bookID})">Read</button></td>\n`;
-        strHTML += `<td><button type="button" class="btn btn-primary update-button-${bookIdx + 1}" data-toggle="modal" data-target="#exampleModalUpdate" data-trans="table-update" onclick="onUpdate(${book.bookID})">Update</button></td>\n`;
-        strHTML += `<td><button type="button" class="btn btn-primary update-button-${bookIdx + 1}" data-toggle="modal" data-target="#exampleModal" data-trans="table-delete" onclick="onDelete(${book.bookID})">Delete</button></td>\n</tr>`;
-    });
-    var elTable = document.querySelector('.table-body');
-    elTable.innerHTML = strHTML;
-    doTrans();
-    addHammerOnTable();
+function renderSearchBar() {
+    let searches = getSearches();
+    let sortedSearcehs = sortSearches(searches);
+    let maxIdx = Math.min(4, sortedSearcehs.length); //we wish to display only the 4 top searches
+    let elKeywordsDiv = document.querySelector('.keywords-search');
+    let strHTML = '';
+    for (let i = 0; i < maxIdx; i++) {
+        strHTML += `<div class="keyword" onclick="onKeywordClick(this)">${sortedSearcehs[i].key}</div>\n`
+    }
+    elKeywordsDiv.innerHTML = strHTML;
 }
-*/
+
+function onSearchImg() {
+    //filter the images according to their keywords
+    //make input value to lower case (all keywords are lowercase) and use includes
+    let elSearchInput = document.querySelector('.search-img-input');
+    filterImages(elSearchInput.value);
+    renderImages();
+}
+
+function onKeywordClick(elKeyword) {
+    filterImages(elKeyword.innerText);
+    renderImages();
+}

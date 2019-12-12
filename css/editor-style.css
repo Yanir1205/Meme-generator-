@@ -1,3 +1,39 @@
+@font-face {
+    Font-family: Montserrat-thin;
+    Src: url('../fonts/Montserrat/Montserrat-Thin.ttf');
+}
+
+@font-face {
+    Font-family: Montserrat-regular;
+    Src: url('../fonts/Montserrat/Montserrat-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'fontawesome';
+    src: url("../fonts/fontAwesome/FontAwesome.otf");
+    src: url("../fonts/fontAwesome/fontawesome-webfont.eot") format("embedded-opentype"), url("../fonts/fontAwesome/fontawesome-webfont.woff2") format("woff2"), url("../fonts/fontAwesome/fontawesome-webfont.woff") format("woff"), url("../fonts/fontAwesome/fontawesome-webfont.ttf") format("truetype"), url("../fonts/fontAwesome/fontawesome-webfont.svg") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fa {
+    display: inline-block;
+    font-family: fontawesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.toggle-menu-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.75rem;
+    padding: 20px;
+    display: none;
+}
+
 html {
     Color: #606060;
     Line-height: 1.25
@@ -9,6 +45,7 @@ html {
 
 body {
     margin: 0;
+    height: 100vh;
 }
 
 header {
@@ -60,7 +97,7 @@ header {
 .my-canvas {
     margin: 20px auto;
     border: 1px solid blue;
-    margin: 0;
+    /* margin: 0; */
     margin-right: 20px;
     box-sizing: border-box;
     width: 500px;
@@ -78,16 +115,26 @@ header {
     border-radius: 5px;
     box-shadow: 0px 0px 5px rgba(66, 66, 66, .75);
     text-shadow: 0px 0px 5px rgba(66, 66, 66, .75);
+    width: 70%;
+    height: 30px;
 }
 
 .css-input:focus {
     outline: none;
 }
 
+.html5colorpicker {
+    margin-right: 19px;
+    width: 60px;
+    height: 60px;
+}
+
 .editor-btn {
     width: 60px;
     height: 60px;
     padding: 0;
+    margin-right: 19px;
+    border-radius: 10px;
 }
 
 .editor-btn img {
@@ -120,6 +167,64 @@ header {
     max-width: 980px;
 }
 
+.controllers-container {
+    height: 500px;
+    justify-content: space-between;
+    WIDTH: 50%;
+}
+
 .column {
     flex-direction: column;
+}
+
+.btn {
+    box-shadow: 0px 0px 0px 2px #9fb4f2;
+    background: linear-gradient(to bottom, #bb771e 5%, #cc7421 100%);
+    background-color: #ff0000;
+    border-radius: 10px;
+    border: 1px solid #fd0000;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    height: 35px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #918f8f;
+    margin: 0.5rem;
+    width: 120px;
+    font-size: 1rem;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.btn:hover {
+    background: linear-gradient(to bottom, #b37f0f 5%, #a3550c 100%);
+    background-color: #8d6c47;
+}
+
+.btn:active {
+    position: relative;
+    top: 1px;
+}
+
+@media (max-width: 1000px) {
+    .container {
+        max-width: 750px;
+        height: 100%;
+    }
+    .canvas-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .my-canvas {
+        margin-bottom: 10px;
+    }
+    .controllers-container {
+        margin-top: 10px;
+    }
+    .css-input {
+        width: 95%;
+        height: 40px;
+    }
 }

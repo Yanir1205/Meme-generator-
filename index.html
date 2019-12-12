@@ -13,19 +13,21 @@
 <body onload="init()">
     <header>
         <section class="container flex align-center">
-            <div class="logo">MEMEgen</div>
+            <div class="logo"><img src="LOGO/LOGO.png"></div>
             <nav class="main-nav flex">
                 <ul class="nav-buttons clean-list flex align-center">
                     <li>
-                        <a href="#" class="active">Gallery</a>
+                        <a href="#" class="gallery active" onclick="onGalleryBtnClick()">Gallery</a>
                     </li>
                     <li>
-                        <a href="#">MEMES</a>
+                        <a href="#" class="memes">MEMES</a>
                     </li>
                     <li>
-                        <a href="#">About</a>
+                        <a href="#" class="about">About</a>
                     </li>
                 </ul>
+                <button class="toggle-menu-btn fa" onclick="toggleMenu()" alt="Open main menu"></button>
+                <div class="toggle-menu-screen screen" onclick="toggleMenu()" alt="toggle main menu"></div>
             </nav>
         </section>
     </header>
@@ -33,12 +35,12 @@
         <div class="image-gallery container" hidden>
             <div class="search-bar flex">
                 <div class="search-input">
-                    <input type="text" class="search-img-input" placeholder="Search">
+                    <input type="text" class="search-img-input" placeholder="Search" onkeyup="onSearchImg()">
                 </div>
                 <div class="keywords-search flex">
-                    <div class="keyword">happy</div>
-                    <div class="keyword">sarcastic</div>
-                    <div class="keyword">funny</div>
+                    <div class="keyword" onclick="onKeywordClick(this)">happy</div>
+                    <div class="keyword" onclick="onKeywordClick(this)">cute</div>
+                    <div class="keyword" onclick="onKeywordClick(this)">funny</div>
                 </div>
             </div>
             <div class="images grid">
@@ -48,11 +50,12 @@
         </div>
         <div class="editor container">
             <div class="canvas-container flex">
-                <canvas class="my-canvas" width="500" height="500">
+                <canvas id="my-canvas" class="my-canvas" width="500" height="500">
                     Update your browser to enjoy canvas!
                 </canvas>
                 <div class="controllers-container flex column align-center">
-                    <input type="text" class="css-input text-line" placeholder="Text Line" />
+                    <input type="text" class="css-input text-line" placeholder="Text Line"
+                        onkeyup="onTextLineKeyUp()" />
                     <div class="buttons-1 flex">
                         <button class="editor-btn toggle-text-lines" onclick="onChangeRow()"><img
                                 src="ICONS/up-and-down-opposite-double-arrows-side-by-side.png"></button>
@@ -61,16 +64,52 @@
                         <button class="editor-btn delete-line" onclick="onDeleteTextLine()"><img
                                 src="ICONS/trash.png"></button>
                     </div>
-                    <div class="buttons-2 flex">
-                        <input type="color" class="html5colorpicker font-color-picker" onchange="onSetFontColor(event)"
+                    <div class="buttons-4 flex">
+                        <button class="editor-btn move-row-up" onclick="onMoveRowUp()"><img
+                                src="ICONS/arrowUp.png"></button>
+                        <button class="editor-btn move-row-down" onclick="onMoveRowDown()"><img
+                                src="ICONS/arrowDown.png"></button>
+                        <button class="editor-btn move-row-left" onclick="onMoveRowLeft()"><img
+                                src="ICONS/arrowLeft.png"></button>
+                        <button class="editor-btn move-row-right" onclick="onMoveRowRight()"><img
+                                src="ICONS/arrowRight.png"></button>
+                    </div>
+                    <div class="buttons-3 flex">
+                        <button class="editor-btn increase-font-size" onclick="onIncreaseFontSize()"><img
+                                src="ICONS/increase font - icon.png"></button>
+                        <button class="editor-btn decrease-font-size" onclick="onDecreaseFontSize()"><img
+                                src="ICONS/decrease font - icon.png"></button>
+                    </div>
+                    <div class="buttons-4 flex">
+                        <input type="color" class="html5colorpicker fill-color-picker" onchange="onSetFillColor(event)"
                             value="#ff0000">
                         <input type="color" class="html5colorpicker stroke-color-picker"
                             onchange="onSetStrokeColor(event)" value="#ff0000">
+                    </div>
+                    <div class="buttons-5 flex">
+
+                        <a href="#" class="btn download-btn" onclick="onDownloadCanvas(this)"
+                            download="my-canvas.jpg">Download</a>
+                        <form action="" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)">
+                            <input name="img" id="imgData" type="hidden" />
+                            <button class="btn publish-btn" type="submit">Publish</button>
+                            <div class="share-container"></div>
+                        </form>
+
+                        <div class="share-container"></div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    <footer class="flex column align-center">
+        <div class="secondary-logo">
+            <img src="LOGO/LOGO.png">
+        </div>
+        <div class="footer-text">
+            <h3>all rights reserved 2019</h3>
+        </div>
+    </footer>
     <script src="js/utils.js"></script>
     <script src="js/i18n-service.js"></script>
     <script src="js/storageService.js"></script>

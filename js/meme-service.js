@@ -14,22 +14,36 @@ function setSelectedTxtIdx(idx) {
     gMeme.selectedTxtIdx = idx;
 }
 
+function getCurrSelectedTxtIdx() {
+    return gMeme.selectedTxtIdx;
+}
+
 function getNumOfTextLines() {
     return gMeme.txts.length;
 }
 
-function addTextLine(line, size, align, color) {
+function getAllTextLines() {
+    return gMeme.txts;
+}
+
+function addTextLine(line, fontSize, x, y, fillColor, strokeColor) {
     let text = {
         line, //the text itself
-        size, //font size
-        align, //distance from the left edge of the canvas
-        color //stroke color
+        fontSize, //font size
+        x, //distance from the left edge of the canvas
+        y, //distance from the top edge of the canvas
+        fillColor, //font fill color
+        strokeColor //line color
     };
     gMeme.txts.push(text);
 }
 
 function getFontSize() {
     return gMeme.txts[gMeme.selectedTxtIdx].size;
+}
+
+function setFontSize(newFontSizeDiff) {
+    gMeme.txts[gMeme.selectedTxtIdx].fontSize += newFontSizeDiff;
 }
 
 function getAlign() {
@@ -48,8 +62,29 @@ function getCurrTextLine() {
     return gMeme.txts[gMeme.selectedTxtIdx];
 }
 
+function areThereAnyTextLines() {
+    return (gMeme.txts.length > 0)
+}
+
+function setTextLineXVal(diff) {
+    gMeme.txts[gMeme.selectedTxtIdx].x += diff;
+}
+
+function setTextLineYVal(diff) {
+    gMeme.txts[gMeme.selectedTxtIdx].y += diff;
+}
+
+function getCurrTxtXVal() {
+    return gMeme.txts[gMeme.selectedTxtIdx].x;
+}
+
+function getCurrTxtYVal() {
+    return gMeme.txts[gMeme.selectedTxtIdx].y;
+}
+
 function deleteCurrTextLine() {
-    gMeme.txts.splice(gMeme.selectedTxtIdx, 1);
+    if (gMeme.selectedTxtIdx <= gMeme.txts.length - 1)
+        gMeme.txts.splice(gMeme.selectedTxtIdx, 1);
 }
 
 function changeTextLine(diff) {
@@ -62,7 +97,16 @@ function changeTextLine(diff) {
 }
 
 function editCurrentTextLine(newLine) {
-    gMeme.txts[gMeme.selectedTxtIdx].line = newLine;
+    if (gMeme.txts.length === 0) {
+        //this is the first line
+        return false;
+    } else if (gMeme.txts.length <= gMeme.selectedTxtIdx) {
+        //there are text lines but this line is a new line to be added
+        return false
+    } else {
+        gMeme.txts[gMeme.selectedTxtIdx].line = newLine;
+        return true;
+    }
 }
 
 function changeCurrTextColor(newColor) {
