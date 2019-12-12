@@ -234,18 +234,23 @@ header {
 @media (max-width: 740px) {
     .open.toggle-menu-screen {
         display: block;
-        background: rgba(42,42,42,0.8);
+        background: rgba(42, 42, 42, 0.8);
         z-index: 100;
         position: fixed;
         width: 100vw;
-        height: 100vh;
+        height: 101vh;
         left: 0;
         top: 0;
         opacity: 1;
         visibility: visible;
     }
+    .keywords-search {
+        width: 100%;
+        margin-left: 10px;
+        justify-content: center;
+    }
     .nav-buttons.open {
-        transform: translate(0, 0);
+        transform: translate(10, 10);
         width: 120px;
         background: #ff7f00;
         z-index: 300;
@@ -254,11 +259,12 @@ header {
         display: flex;
         flex-direction: column;
         position: fixed;
-        height: 100vh;
+        height: 101vh;
         border-left: 1px solid black;
     }
-    .open a {
-
+    .my-canvas {
+        width: 250px;
+        height: 250px; 
     }
     .open li {
         border-left: none;
