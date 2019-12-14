@@ -1,16 +1,20 @@
 'use strict';
 
+const CANVAS_WIDTH = 500; //default canvas width for desktop resolution
+const CANVAS_HEIGHT = 500; //default canvas height for desktop resolution
+
 //canvas variables:
 var gCanvas;
 var gCtx;
 var gImg;
+var gCanvasResizeFactor = 1;
 
 //drawing values:
 var gFontSize = 40;
 var gX; //X value for the text line to be added
 var gY; //Y value for the text line to be added
-var gStrokeColor = '#ff0000';
-var gFillColor = '#ff0000';
+var gStrokeColor = '#000000';
+var gFillColor = '#ffffff';
 
 function initEditor() {
     gCanvas = document.querySelector('.my-canvas');
@@ -42,15 +46,15 @@ function setTextCoordinates(text) {
     // let currNumOfTextLines = getNumOfTextLines();
     let currNumOfTextLines = getNumOfTextLines();
     if (!currNumOfTextLines || currNumOfTextLines === 0) {
-        //if this is the first text line
+        //if this is the first text line - add to the top
         gY = gFontSize * 2;
     } else if (currNumOfTextLines === 1) {
-        //if this is the second text line
+        //if this is the second text line - add to the bottom
         gY = gCanvas.height - (gFontSize * 2);
 
         // gOffsetY = gCanvas.offsetHeight - gFontSize * 2;
     } else {
-        //if this is the third or more text line
+        //if this is the third or more text line - add to the centers
         gY = gCanvas.offsetHeight / 2 - (gFontSize / 2);
     }
 }
@@ -128,30 +132,36 @@ function onMoveRowRight() {
     }
 }
 
-function isExceedingCanvasWidthV1(xDiff) {
-    debugger;
-    let currX = getCurrTxtXVal();
-    //if (font-size * text length + current x values + xDiff) is bigger than the canvas width - it exceeds
-    if ((getCurrTextLine().line.length * getCurrTextLine().fontSize + getCurrTxtXVal() + xDiff + currX) > gCanvas.offsetWidth) {
-        return true;
-    } else if ((currX + xDiff) <= 0) {
-        return true;
-    } else return false;
-}
+// function isExceedingCanvasWidthV1(xDiff) {
+//     debugger;
+//     let currX = getCurrTxtXVal();
+//     //if (font-size * text length + current x values + xDiff) is bigger than the canvas width - it exceeds
+//     if ((getCurrTextLine().line.length * getCurrTextLine().fontSize + getCurrTxtXVal() + xDiff + currX) > gCanvas.offsetWidth) {
+//         return true;
+//     } else if ((currX + xDiff) <= 0) {
+//         return true;
+//     } else return false;
+// }
 
 function isExceedingCanvasWidth(xDiff) {
     let textLine = getCurrTextLine().line;
+    if (gCanvas.offsetWidth < CANVAS_WIDTH) gCanvasResizeFactor = 0.5;
+    else gCanvasResizeFactor = 1;
     if ((getCurrTxtXVal() + xDiff) <= 0) return true;
-    else if ((gCtx.measureText(textLine).width + xDiff + getCurrTxtXVal()) > gCanvas.offsetWidth) return true;
+    else if (((gCtx.measureText(textLine).width * gCanvasResizeFactor) + xDiff + (gCanvasResizeFactor * getCurrTxtXVal())) > gCanvas.offsetWidth) return true;
     else return false;
 }
 
 function isExceedingCanvasHeight(yDiff) {
-    let currY = getCurrTxtYVal();
+    if (gCanvas.offsetHeight < CANVAS_HEIGHT) gCanvasResizeFactor = 0.5;
+    else gCanvasResizeFactor = 1;
+    let currY = getCurrTxtYVal() * gCanvasResizeFactor;
     if ((currY + yDiff) > gCanvas.offsetHeight) {
+        //if text reached the bottom of the canvas
         return true;
     }
-    else if ((currY + yDiff) < (getCurrTextLine().fontSize + 10)) {
+    else if ((currY + yDiff) < ((getCurrTextLine().fontSize * gCanvasResizeFactor) + 5 * gCanvasResizeFactor)) {
+        //if text reached the top of the canvas
         return true
     }
     else return false;

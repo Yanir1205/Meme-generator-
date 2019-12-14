@@ -48,6 +48,8 @@ function openGalleryMode() {
     //make gallery button active again
     let elGalleryBtn = document.querySelector('.gallery');
     elGalleryBtn.classList.add("active");
+    let elTextLineInput = document.querySelector('.text-line');
+    elTextLineInput.value = '';
 }
 
 function renderImages() {
@@ -56,7 +58,7 @@ function renderImages() {
     let strHTML = '';
     images.forEach(function (img, imgIdx) {
         strHTML += `<li class="image">\n
-        \t<img onclick="onImgGalleryClick(${img.id})" src="${img.url}">\n
+        \t<img class="img-gallery" onclick="onImgGalleryClick(${img.id})" src="${img.url}">\n
     </li>\n`;
     });
     let elImgsList = document.querySelector('.images-list');
@@ -86,4 +88,39 @@ function onSearchImg() {
 function onKeywordClick(elKeyword) {
     filterImages(elKeyword.innerText);
     renderImages();
+}
+
+function onChangeLang() {
+    let currLang = getCurrentLang();
+    let elLang = document.querySelector('.lang-text');
+    //when the user presses the globe icon it changes the language
+    switch (currLang) {
+        case 'en':
+            setLang('es');
+            elLang.innerText = 'es';
+            break;
+        case 'es':
+            setLang('he');
+            elLang.innerText = 'he';
+            break;
+        case 'he':
+            setLang('en');
+            elLang.innerText = 'en';
+            break;
+    }
+    currLang = getCurrentLang();
+    if (currLang === 'he') {
+        document.querySelector('.about').classList.remove('en');
+        document.querySelector('.gallery').classList.add('he');
+        document.querySelector('.about').classList.add('he');
+        document.querySelector('body').style['direction'] = 'rtl'
+    }
+    else {
+        document.querySelector('.about').classList.remove('en'); //preventing multiple additions of 'en' as a class
+        document.querySelector('.about').classList.add('en');
+        document.querySelector('.gallery').classList.remove('he');
+        document.querySelector('.about').classList.remove('he');
+        document.querySelector('body').style['direction'] = 'ltr'
+    }
+    doTrans();
 }

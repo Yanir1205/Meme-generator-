@@ -5,75 +5,55 @@ var gCurrLang = 'en';
 
 
 var gTrans = {
-    'document-title': {
-        en: 'The Book Shop',
-        es: 'La Libreria',
-        he: 'הספריה'
-    },
     'title': {
-        en: 'Welcome to the Book Shop',
-        es: 'Bienvenido A La Libreria',
-        he: 'ברוכים הבאים לספריה הממוחשבת'
+        en: 'Meme generator',
+        es: 'Generador de memes',
+        he: 'מחולל המימים'
     },
-    'table-title': {
-        en: 'Title',
-        es: 'Nombre del libro',
-        he: 'שם הספר'
+    'gallery-btn': {
+        en: 'Gallery',
+        es: 'Galeria',
+        he: 'גלריה'
     },
-    'table-price': {
-        en: 'Price',
-        es: 'Precio',
-        he: 'מחיר',
+    'memes-btn': {
+        en: 'Memes',
+        es: 'Memes',
+        he: 'מימים'
     },
-    'table-rate': {
-        en: 'Rate',
-        es: 'Tarifa',
-        he: 'דירוג'
+    'about-btn': {
+        en: 'About',
+        es: 'Nosotros',
+        he: 'אודותינו',
     },
-    'table-actions': {
-        en: 'Actions',
-        es: 'Actiones',
-        he: 'פעולות',
+    'canvas-text': {
+        en: 'Update your browser to enjoy canvas!',
+        es: 'Actualiza tu nevegador para disfrutar al canvas',
+        he: 'עדכן את הדפדפן כדי להנות מקנבס'
     },
-    'table-read': {
-        en: 'Read',
-        es: 'Leer',
-        he: 'קריאה',
+    'placeholder-btn': {
+        en: 'Text line',
+        es: 'Linea de texto',
+        he: 'שורת חיפוש',
     },
-    'table-update': {
-        en: 'Update',
-        es: 'Actualizar',
-        he: 'עדכן',
+    'download-btn': {
+        en: 'Download',
+        es: 'Descargar',
+        he: 'הורד',
     },
-    'table-delete': {
-        en: 'Delete',
-        es: 'Borrar',
-        he: 'מחק',
+    'publish-btn': {
+        en: 'Publish',
+        es: 'Publicar',
+        he: 'פרסם',
     },
-    'add-book-button': {
-        en: 'Add',
-        es: 'Agregar',
-        he: 'הוסף'
+    'all-rights-reserved': {
+        en: 'All rights reserved 2019',
+        es: 'Todos los derechos reservados 2019',
+        he: 'כל הזכויות שמורות 2019',
     },
-    'currency-symbol': {
-        en: '$',
-        es: '€',
-        he: '₪'
-    },
-    'modal-update-title': {
-        en: 'Update Book Price',
-        es: 'Actualizar el precio del libro',
-        he: 'עדכון מחיר הספר' 
-    },
-    'modal-update-price-message': {
-        en: 'Update price for: ',
-        es: 'Actualize precio para: ',
-        he: 'עדכן מחיר עבור '
-    },
-    'modal-update-close-btn': {
-        en: 'Close',
-        es: 'Cerrar',
-        he: 'סגור'
+    'search-input': {
+        en: 'Search',
+        es: 'Busca',
+        he: 'חיפוש',
     }
 }
 

@@ -57,6 +57,7 @@ header {
 
 .search-bar {
     margin-bottom: 20px;
+    justify-content: space-around;
 }
 
 .logo {
@@ -78,13 +79,13 @@ header {
     align-items: center;
 }
 
-.nav-buttons li:last-child {
+/* .nav-buttons li:last-child {
     border-right: 1px solid #1e1e1e;
-}
+} */
 
-.search-input {
-    margin-right: 100px;
-}
+/* .search-input {
+    /* margin-right: 100px; 
+}*/
 
 .keyword {
     margin-right: 50px;
@@ -273,4 +274,13 @@ header {
     .nav-buttons li:last-child {
         border-right: none;
     }
+    .language {
+        order: -1;
+        align-self: end;
+        margin-left: 15px;
+    }
+}
+
+.about.he {
+    border-right: none;
 }
