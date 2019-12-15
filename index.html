@@ -36,7 +36,8 @@
         <div class="image-gallery container" hidden>
             <div class="search-bar flex">
                 <div class="search-input">
-                    <input type="text" data-trans="search-input" class="search-img-input" placeholder="Search" onkeyup="onSearchImg()">
+                    <input type="text" data-trans="search-input" class="search-img-input" placeholder="Search"
+                        onkeyup="onSearchImg()">
                 </div>
                 <div class="keywords-search flex">
                     <div class="keyword" onclick="onKeywordClick(this)">happy</div>
@@ -69,7 +70,7 @@
                         <button class="editor-btn delete-line" onclick="onDeleteTextLine()"><img
                                 src="ICONS/trash.png"></button>
                     </div>
-                    <div class="buttons-4 flex">
+                    <div class="buttons-2 flex">
                         <button class="editor-btn move-row-up" onclick="onMoveRowUp()"><img
                                 src="ICONS/arrowUp.png"></button>
                         <button class="editor-btn move-row-down" onclick="onMoveRowDown()"><img
@@ -80,19 +81,26 @@
                                 src="ICONS/arrowRight.png"></button>
                     </div>
                     <div class="buttons-3 flex">
+                        <button class="editor-btn align-left" onclick="onAlignLeft()"><img
+                                src="ICONS/align-to-left.png"></button>
+                        <button class="editor-btn align-left" onclick="onAlignCenter()"><img
+                                src="ICONS/center-text-alignment.png"></button>
+                        <button class="editor-btn align-left" onclick="onAlignRight()"><img
+                                src="ICONS/align-to-right.png"></button>
+                    </div>
+                    <div class="buttons-4 flex">
                         <button class="editor-btn increase-font-size" onclick="onIncreaseFontSize()"><img
                                 src="ICONS/increase font - icon.png"></button>
                         <button class="editor-btn decrease-font-size" onclick="onDecreaseFontSize()"><img
                                 src="ICONS/decrease font - icon.png"></button>
                     </div>
-                    <div class="buttons-4 flex">
+                    <div class="buttons-5 flex">
                         <input type="color" class="html5colorpicker fill-color-picker" onchange="onSetFillColor(event)"
                             value="#ffffff">
                         <input type="color" class="html5colorpicker stroke-color-picker"
                             onchange="onSetStrokeColor(event)" value="#000000">
                     </div>
-                    <div class="buttons-5 flex">
-
+                    <div class="buttons-6 flex">
                         <a href="#" class="btn download-btn" onclick="onDownloadCanvas(this)" download="my-canvas.jpg"
                             data-trans="download-btn">Download</a>
                         <form action="" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)">

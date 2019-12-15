@@ -39,6 +39,10 @@ html {
     Line-height: 1.25
 }
 
+.html5colorpicker {
+    cursor: pointer;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -114,6 +118,7 @@ header {
 .img-gallery {
     width: 150px;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .editor {

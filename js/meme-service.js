@@ -18,6 +18,10 @@ function getCurrSelectedTxtIdx() {
     return gMeme.selectedTxtIdx;
 }
 
+function getTextByIdx(idx) {
+    return gMeme.txts[idx];
+}
+
 function getNumOfTextLines() {
     return gMeme.txts.length;
 }
@@ -37,6 +41,20 @@ function addTextLine(line, fontSize, x, y, fillColor, strokeColor) {
         width: gCtx.measureText(line).width //line width (calculated using gCtx.measureText and the current font size as saved on the gCtx)
     };
     gMeme.txts.push(text);
+}
+
+function getTextLineIdx(offsetX, offsetY) {
+    //checks if the given offsetX and offsetY represent an area belongs to any existing text line on the canvas
+    //if yes - returns the text line Idx
+    //otherwise - returns null
+    let texts = getAllTextLines();
+    for (let i = 0; i < texts.length; i++) {
+        let text = texts[i];
+        if (offsetX >= text.x && offsetX <= (text.x + text.width) && offsetY >= (text.y - text.fontSize) && (offsetY <= text.y)) {
+            return i;
+        }
+    }
+    return null;
 }
 
 function getCurrStrokeColor() {
@@ -79,11 +97,19 @@ function areThereAnyTextLines() {
     return (gMeme.txts.length > 0)
 }
 
-function setTextLineXVal(diff) {
+function setTextLineXVal(xVal) {
+    gMeme.txts[gMeme.selectedTxtIdx].x = xVal;
+}
+
+function setTextLineYVal(yVal) {
+    gMeme.txts[gMeme.selectedTxtIdx].y = yVal;
+}
+
+function setTextLineXValDiff(diff) {
     gMeme.txts[gMeme.selectedTxtIdx].x += diff;
 }
 
-function setTextLineYVal(diff) {
+function setTextLineYValDiff(diff) {
     gMeme.txts[gMeme.selectedTxtIdx].y += diff;
 }
 

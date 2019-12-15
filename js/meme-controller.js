@@ -8,6 +8,8 @@ var gCanvas;
 var gCtx;
 var gImg;
 var gCanvasResizeFactor = 1;
+var gXDiff;
+var gYDiff;
 
 //drawing values:
 var gFontSize = 40;
@@ -23,6 +25,7 @@ function initEditor() {
     drawImg();
     setSelectedTxtIdx(0);
     setDrawingValues();
+    addListeners();
     renderCanvas();
     ////// PART 8 //////
     // resizeCanvas()
@@ -35,6 +38,16 @@ function initEditor() {
     //         drawImg()
     //         drawLine(10, 10, 200, 500)
     //     })
+}
+
+function addListeners() {
+    //mouse events:
+    gCanvas.addEventListener("mousedown", onCanvasMouseClick, event);
+
+    //touch events:
+    gCanvas.addEventListener("touchstart", onTouchStart, event);
+    // gCanvas.addEventListener("touchmove", onTouchMove, event);
+    // gCanvas.addEventListener('touchend', onTouchEnd, event);
 }
 
 function setTextCoordinates(text) {
@@ -94,7 +107,7 @@ function onMoveRowUp() {
         //render the canvas
         let diff = -10;
         if (!isExceedingCanvasHeight(diff)) {
-            setTextLineYVal(diff);
+            setTextLineYValDiff(diff);
             renderCanvas();
         }
     }
@@ -106,7 +119,7 @@ function onMoveRowDown() {
         //render the canvas
         let diff = 10;
         if (!isExceedingCanvasHeight(diff)) {
-            setTextLineYVal(diff);
+            setTextLineYValDiff(diff);
             renderCanvas();
         }
     }
@@ -118,7 +131,7 @@ function onMoveRowLeft() {
         //render the canvas
         let diff = -10;
         if (!isExceedingCanvasWidth(diff)) {
-            setTextLineXVal(diff);
+            setTextLineXValDiff(diff);
             renderCanvas();
         }
     }
@@ -130,22 +143,171 @@ function onMoveRowRight() {
         //render the canvas
         let diff = 10;
         if (!isExceedingCanvasWidth(diff)) {
-            setTextLineXVal(diff);
+            setTextLineXValDiff(diff);
             renderCanvas();
         }
     }
 }
 
-// function isExceedingCanvasWidthV1(xDiff) {
-//     debugger;
-//     let currX = getCurrTxtXVal();
-//     //if (font-size * text length + current x values + xDiff) is bigger than the canvas width - it exceeds
-//     if ((getCurrTextLine().line.length * getCurrTextLine().fontSize + getCurrTxtXVal() + xDiff + currX) > gCanvas.offsetWidth) {
-//         return true;
-//     } else if ((currX + xDiff) <= 0) {
-//         return true;
-//     } else return false;
-// }
+//when user start-touches the canvas:
+//check if the current x and y values of the touch belong to a text line (or icon) and if yes - return the text line Idx (or icon Idx). if not - return null
+//if an Idx has been returned - mark the text line (or icon) with a rectangle around it 
+//remember to remove all rectangle markings on every touch which is not at a text line area 
+//also remove the rectangles when user presses the download btn, publish btn, save btn (future feature), gallery btn
+function onTouchStart(ev) {
+    //check if current touch coordinates are within any text line area
+    console.log(ev);
+    let LineIdx = getTextLineIdx(ev.touches[0].clientX - gCanvas.offsetLeft, ev.touches[0].clientY - gCanvas.offsetTop)
+    if (LineIdx !== null) {
+        renderCanvas();
+        markLine(LineIdx);
+        setSelectedTxtIdx(LineIdx);
+        let offsetX = ev.touches[0].clientX - gCanvas.offsetLeft;
+        let offsetY = ev.touches[0].clientY - gCanvas.offsetTop;
+        gXDiff = offsetX;
+        gYDiff = offsetY;
+        gCanvas.addEventListener("touchmove", onCanvasTouchMove, event);
+        gCanvas.addEventListener("touchend", onCanvasTouchEnd, event);
+        gCanvas.addEventListener("touchcancel", onCanvasTouchEnd, event);
+    }
+    else {
+        renderCanvas();
+        gCanvas.removeEventListener("touchmove", onCanvasTouchMove);
+        gCanvas.removeEventListener("touchend", onCanvasTouchEnd);
+        gCanvas.removeEventListener("touchcancel", onCanvasTouchEnd);
+    }
+}
+
+function onCanvasMouseClick(ev) {
+    let idx = getTextLineIdx(ev.offsetX, ev.offsetY);
+    if (idx !== null) {
+        //if user pressed an existing text line - mark it with rectangle and start listening to mousemove events
+        renderCanvas();
+        markLine(idx);
+        setSelectedTxtIdx(idx);
+        gXDiff = ev.offsetX;
+        gYDiff = ev.offsetY;
+        gCanvas.addEventListener("mousemove", onCanvasMouseMove, event);
+        gCanvas.addEventListener("mouseup", onCanvasMouseUp, event);
+        gCanvas.addEventListener("mouseout", onCanvasMouseOut, event);
+    }
+    else {
+        //otherwise - stop listening to mousemove and mouseout events and remove all rectangles
+        renderCanvas();
+        gCanvas.removeEventListener("mousemove", onCanvasMouseMove);
+        gCanvas.removeEventListener("mouseup", onCanvasMouseUp);
+        gCanvas.removeEventListener("mouseout", onCanvasMouseUp);
+    }
+}
+
+function onCanvasTouchMove(ev) {
+    event.preventDefault();
+    if (!isOutOfBoundries(ev)) {
+        gXDiff = (ev.touches[0].clientX - gCanvas.offsetLeft) - gXDiff;
+        gYDiff = (ev.touches[0].clientY - gCanvas.offsetTop) - gYDiff;
+        setTextLineXValDiff(gXDiff);
+        setTextLineYValDiff(gYDiff);
+        gXDiff = (ev.touches[0].clientX - gCanvas.offsetLeft);
+        gYDiff = (ev.touches[0].clientY - gCanvas.offsetTop);
+        renderCanvas();
+        markLine(getCurrSelectedTxtIdx());
+    } else {
+        //remove the touchmove listeners
+        gCanvas.removeEventListener("touchmove", onCanvasTouchMove);
+        gCanvas.removeEventListener("touchend", onCanvasTouchEnd);
+        gCanvas.removeEventListener("touchcancel", onCanvasTouchEnd);
+    }
+}
+
+function onCanvasTouchEnd(ev) {
+    gCanvas.removeEventListener("touchmove", onCanvasTouchMove);
+    gCanvas.removeEventListener("touchend", onCanvasTouchEnd);
+    gCanvas.removeEventListener("touchcancel", onCanvasTouchEnd);
+}
+
+function isOutOfBoundries(ev) {
+    if (ev.touches[0].clientX - gCanvas.offsetLeft < 0 || ev.touches[0].clientX - gCanvas.offsetLeft > gCanvas.offsetWidth || ev.touches[0].clientY - gCanvas.offsetTop < 0 || ev.touches[0].clientY - gCanvas.offsetTop > gCanvas.offsetHeight) {
+        return true
+    } else return false;
+}
+
+function onCanvasMouseMove(ev) {
+    //user moves the text line accross the canvas area
+    //update the model with the current x and y values of the line
+    //render the canvas
+    //mark the line at the new current location
+    gXDiff = ev.offsetX - gXDiff;
+    gYDiff = ev.offsetY - gYDiff;
+    setTextLineXValDiff(gXDiff);
+    setTextLineYValDiff(gYDiff);
+    gXDiff = ev.offsetX;
+    gYDiff = ev.offsetY;
+    renderCanvas();
+    markLine(getCurrSelectedTxtIdx());
+}
+
+function onCanvasMouseUp(ev) {
+    gCanvas.removeEventListener("mousemove", onCanvasMouseMove);
+    gCanvas.removeEventListener("mouseup", onCanvasMouseUp);
+    gCanvas.removeEventListener("mouseout", onCanvasMouseOut);
+}
+
+function markLine(idx) {
+    //marks the text line of the given index with a rectangle around it
+    let text = getTextByIdx(idx);
+    // drawRect(text.x - 10, text.y - text.fontSize, text.width + 20, text.fontSize + 10); //unrounded rectangle
+    drawRoundedRect(gCtx, text.x - 10, text.y - text.fontSize, text.width + 20, text.fontSize + 10, 5, 'grey');
+}
+
+function drawRect(x, y, width, height) {
+    gCtx.save()
+    gCtx.beginPath();
+    gCtx.rect(x, y, width, height)
+    gCtx.strokeStyle = 'grey'
+    gCtx.stroke()
+    gCtx.closePath()
+    gCtx.restore()
+}
+
+function drawRoundedRect(ctx, x, y, width, height, radius, color) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+
+
+    const radiansInCircle = 2 * Math.PI
+    const halfRadians = (2 * Math.PI) / 2
+    const quarterRadians = (2 * Math.PI) / 4
+
+    // top left arc
+    ctx.arc(radius + x, radius + y, radius, -quarterRadians, halfRadians, true)
+
+    // line from top left to bottom left
+    ctx.lineTo(x, y + height - radius)
+
+    // bottom left arc  
+    ctx.arc(radius + x, height - radius + y, radius, halfRadians, quarterRadians, true)
+
+    // line from bottom left to bottom right
+    ctx.lineTo(x + width - radius, y + height)
+
+    // bottom right arc
+    ctx.arc(x + width - radius, y + height - radius, radius, quarterRadians, 0, true)
+
+    // line from bottom right to top right
+    ctx.lineTo(x + width, y + radius)
+
+    // top right arc
+    ctx.arc(x + width - radius, y + radius, radius, 0, -quarterRadians, true)
+
+    // line from top right to top left
+    ctx.lineTo(x + radius, y)
+
+
+    ctx.stroke();
+    ctx.restore();
+}
+
 
 function isExceedingCanvasWidth(xDiff) {
     let textLine = getCurrTextLine().line;
@@ -169,6 +331,27 @@ function isExceedingCanvasHeight(yDiff) {
         return true
     }
     else return false;
+}
+
+function onAlignLeft() {
+    //get the curr selected text line and align it to the left (+10px maomeno)
+    let textLine = getCurrTextLine();
+    textLine.x = 10;
+    renderCanvas();
+}
+
+function onAlignCenter() {
+    //get the curr selected text line and align it to the left (+10px maomeno)
+    let textLine = getCurrTextLine();
+    textLine.x = gCanvas.offsetWidth / 2 - (textLine.width / 2);
+    renderCanvas();
+}
+
+function onAlignRight() {
+    //get the curr selected text line and align it to the left (+10px maomeno)
+    let textLine = getCurrTextLine();
+    textLine.x = gCanvas.offsetWidth - textLine.width;
+    renderCanvas();
 }
 
 function onSetFillColor(ev) {
@@ -228,13 +411,15 @@ function onIncreaseFontSize() {
     //set drawing new values on the canvas for this line and on
     //render the canvas
     let fontSizeDiff = 5;
-    setFontSize(fontSizeDiff);
     gFontSize += fontSizeDiff;
     setDrawingValues();
-    let textLine = getCurrTextLine().line;
-    let width = gCtx.measureText(textLine).width
-    setCurrTextWidth(width);
-    renderCanvas();
+    if (areThereAnyTextLines()) {
+        setFontSize(fontSizeDiff);
+        let textLine = getCurrTextLine().line;
+        let width = gCtx.measureText(textLine).width
+        setCurrTextWidth(width);
+        renderCanvas();
+    }
 }
 
 function onDecreaseFontSize() {
@@ -242,13 +427,15 @@ function onDecreaseFontSize() {
     //set drawing new values on the canvas for this line and on
     //render the canvas
     let fontSizeDiff = -5;
-    setFontSize(fontSizeDiff);
     gFontSize += fontSizeDiff;
     setDrawingValues();
-    let textLine = getCurrTextLine().line;
-    let width = gCtx.measureText(textLine).width
-    setCurrTextWidth(width);
-    renderCanvas();
+    if (areThereAnyTextLines()) {
+        setFontSize(fontSizeDiff);
+        let textLine = getCurrTextLine().line;
+        let width = gCtx.measureText(textLine).width
+        setCurrTextWidth(width);
+        renderCanvas();
+    }
 }
 
 function resizeCanvas() {

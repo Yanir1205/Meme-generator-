@@ -138,6 +138,7 @@ header {
     padding: 0;
     margin-right: 19px;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .editor-btn img {
