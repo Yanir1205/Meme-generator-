@@ -82,6 +82,10 @@ function onSetStrokeColor(ev) {
     let elColor = document.querySelector('.stroke-color-picker');
     gStrokeColor = elColor.value;
     setDrawingValues();
+    if (areThereAnyTextLines()) {
+        setCurrStrokeColor(elColor.value);
+        renderCanvas();
+    }
 }
 
 function onMoveRowUp() {
@@ -171,6 +175,12 @@ function onSetFillColor(ev) {
     let elColor = document.querySelector('.fill-color-picker');
     gFillColor = elColor.value;
     setDrawingValues();
+
+    //if there is a current text line - repaint it with the chosen color (update model + DOM)
+    if (areThereAnyTextLines()) {
+        setCurrTextFillColor(elColor.value);
+        renderCanvas()
+    }
 }
 
 function onSetFontSize(ev) {
@@ -184,10 +194,23 @@ function onChangeRow() {
     // get the text from the current selected text index and place it into the input box value
     if (areThereAnyTextLines()) {
         changeTextLine(1);
-        let txt = getCurrTextLine();
-        let elInput = document.querySelector('.text-line');
-        elInput.value = txt.line;
+
+        //set the tools (displayed fill color input, stroke color, text input) according to the current text line
+        renderTools();
     }
+}
+
+function renderTools() {
+    //changing the text input value
+    //changing the fill color value
+    //changing the stroke color value
+    let txt = getCurrTextLine();
+    let elInput = document.querySelector('.text-line');
+    elInput.value = txt.line;
+    let elFillColor = document.querySelector('.fill-color-picker');
+    elFillColor.value = txt.fillColor;
+    let elStrokeColor = document.querySelector('.stroke-color-picker');
+    elStrokeColor.value = txt.strokeColor;
 }
 
 function onDeleteTextLine() {
@@ -208,6 +231,9 @@ function onIncreaseFontSize() {
     setFontSize(fontSizeDiff);
     gFontSize += fontSizeDiff;
     setDrawingValues();
+    let textLine = getCurrTextLine().line;
+    let width = gCtx.measureText(textLine).width
+    setCurrTextWidth(width);
     renderCanvas();
 }
 
@@ -219,6 +245,9 @@ function onDecreaseFontSize() {
     setFontSize(fontSizeDiff);
     gFontSize += fontSizeDiff;
     setDrawingValues();
+    let textLine = getCurrTextLine().line;
+    let width = gCtx.measureText(textLine).width
+    setCurrTextWidth(width);
     renderCanvas();
 }
 
@@ -267,10 +296,14 @@ function onTextLineKeyUp() {
     //render the canvas
     let elInput = document.querySelector('.text-line');
     let res = editCurrentTextLine(elInput.value);
-    if (res === false) {
+    if (res === false) { //if this is a new text line added
         setTextCoordinates(elInput.value);
         addTextLine(elInput.value, gFontSize, gX, gY, gFillColor, gStrokeColor);
     }
+    //set the new text line width in the model
+
+    let width = gCtx.measureText(elInput.value).width
+    setCurrTextWidth(width);
     renderCanvas();
 }
 

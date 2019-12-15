@@ -33,25 +33,38 @@ function addTextLine(line, fontSize, x, y, fillColor, strokeColor) {
         x, //distance from the left edge of the canvas
         y, //distance from the top edge of the canvas
         fillColor, //font fill color
-        strokeColor //line color
+        strokeColor, //line color
+        width: gCtx.measureText(line).width //line width (calculated using gCtx.measureText and the current font size as saved on the gCtx)
     };
     gMeme.txts.push(text);
 }
 
+function getCurrStrokeColor() {
+    return gMeme.txts[gMeme.selectedTxtIdx].strokeColor;
+}
+
+function setCurrStrokeColor(newStrokeColor) {
+    gMeme.txts[gMeme.selectedTxtIdx].strokeColor = newStrokeColor;
+}
+
+function getCurrTextWidth() {
+    return gMeme.txts[gMeme.selectedTxtIdx].width;
+}
+
+function setCurrTextWidth(newWidth) {
+    gMeme.txts[gMeme.selectedTxtIdx].width = newWidth;
+}
+
 function getFontSize() {
-    return gMeme.txts[gMeme.selectedTxtIdx].size;
+    return gMeme.txts[gMeme.selectedTxtIdx].fontSize;
 }
 
 function setFontSize(newFontSizeDiff) {
     gMeme.txts[gMeme.selectedTxtIdx].fontSize += newFontSizeDiff;
 }
 
-function getAlign() {
-    return gMeme.txts[gMeme.selectedTxtIdx].align;
-}
-
-function getFontColor() {
-    return gMeme.txts[gMeme.selectedTxtIdx].color;
+function getFillColor() {
+    return gMeme.txts[gMeme.selectedTxtIdx].fillColor;
 }
 
 function getEditorImg() {
@@ -109,14 +122,6 @@ function editCurrentTextLine(newLine) {
     }
 }
 
-function changeCurrTextColor(newColor) {
-    gMeme.txts[gMeme.selectedTxtIdx].color = newColor;
-}
-
-function changeCurrTextAlign(newAlign) {
-    gMeme.txts[gMeme.selectedTxtIdx].align = newAlign;
-}
-
-function changeCurrTextSize(newSize) {
-    gMeme.txts[gMeme.selectedTxtIdx].size = newSize;
+function setCurrTextFillColor(newColor) {
+    gMeme.txts[gMeme.selectedTxtIdx].fillColor = newColor;
 }
