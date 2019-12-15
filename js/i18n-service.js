@@ -54,6 +54,11 @@ var gTrans = {
         en: 'Search',
         es: 'Busca',
         he: 'חיפוש',
+    },
+    'save-btn': {
+        en: 'Save',
+        es: 'Guardar',
+        he: 'שמור'
     }
 }
 

@@ -40,6 +40,11 @@ function initEditor() {
     //     })
 }
 
+function onSaveCanvas() {
+    //save the currently meme with all defintions (to enable future re-editing) and to display on the memes tab
+    
+}
+
 function addListeners() {
     //mouse events:
     gCanvas.addEventListener("mousedown", onCanvasMouseClick, event);
