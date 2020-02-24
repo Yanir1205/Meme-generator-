@@ -13,19 +13,14 @@
 <body onload="init()">
     <header>
         <section class="container flex align-center">
-            <div class="logo"><img src="LOGO/LOGO.png"></div>
+            <div class="logo"><img src="LOGO/LOGO.png" onclick="onGalleryBtnClick()"></div>
             <nav class="main-nav flex">
                 <ul class="nav-buttons clean-list flex align-center">
                     <li>
                         <a href="#" data-trans="gallery-btn" class="gallery active"
                             onclick="onGalleryBtnClick()">Gallery</a>
                     </li>
-                    <li>
-                        <a href="#" class="memes" data-trans="memes-btn">MEMES</a>
-                    </li>
-                    <li class="about">
-                        <a href="#" class="about" data-trans="about-btn">About</a>
-                    </li>
+                    
                 </ul>
                 <button class="toggle-menu-btn fa" onclick="toggleMenu()" alt="Open main menu"></button>
                 <div class="toggle-menu-screen screen" onclick="toggleMenu()" alt="toggle main menu"></div>
@@ -72,11 +67,11 @@
                     </div>
                     <div class="buttons-2 flex">
                         <button class="editor-btn move-row-up" onclick="onMoveRowUp()"><img
-                                src="ICONS/arrowUp.png"></button>
+                                src="ICONS/arrowRight.png" class="top"></button>
                         <button class="editor-btn move-row-down" onclick="onMoveRowDown()"><img
-                                src="ICONS/arrowDown.png"></button>
+                                src="ICONS/arrowRight.png" class="bottom"></button>
                         <button class="editor-btn move-row-left" onclick="onMoveRowLeft()"><img
-                                src="ICONS/arrowLeft.png"></button>
+                                src="ICONS/arrowRight.png" class="left"></button>
                         <button class="editor-btn move-row-right" onclick="onMoveRowRight()"><img
                                 src="ICONS/arrowRight.png"></button>
                     </div>
