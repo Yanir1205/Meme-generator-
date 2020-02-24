@@ -146,6 +146,16 @@ header {
     height: 38px;
 }
 
+.editor-btn img.left {
+    transform: rotate(180deg);
+}
+.editor-btn img.bottom {
+    transform: rotate(90deg);
+}
+.editor-btn img.top {
+    transform: rotate(-90deg);
+}
+
 /* helpers */
 
 .clean-list {
@@ -266,7 +276,7 @@ header {
     }
     .my-canvas {
         width: 250px;
-        height: 250px; 
+        height: 250px;
     }
     .open li {
         border-left: none;
