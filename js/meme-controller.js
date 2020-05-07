@@ -161,7 +161,6 @@ function onMoveRowRight() {
 //also remove the rectangles when user presses the download btn, publish btn, save btn (future feature), gallery btn
 function onTouchStart(ev) {
     //check if current touch coordinates are within any text line area
-    console.log(ev);
     let LineIdx = getTextLineIdx(ev.touches[0].clientX - gCanvas.offsetLeft, ev.touches[0].clientY - gCanvas.offsetTop)
     if (LineIdx !== null) {
         renderCanvas();
@@ -194,14 +193,14 @@ function onCanvasMouseClick(ev) {
         gYDiff = ev.offsetY;
         gCanvas.addEventListener("mousemove", onCanvasMouseMove, event);
         gCanvas.addEventListener("mouseup", onCanvasMouseUp, event);
-        gCanvas.addEventListener("mouseout", onCanvasMouseOut, event);
+        // gCanvas.addEventListener("mouseout", onCanvasMouseOut, event);
     }
     else {
         //otherwise - stop listening to mousemove and mouseout events and remove all rectangles
         renderCanvas();
         gCanvas.removeEventListener("mousemove", onCanvasMouseMove);
         gCanvas.removeEventListener("mouseup", onCanvasMouseUp);
-        gCanvas.removeEventListener("mouseout", onCanvasMouseUp);
+        // gCanvas.removeEventListener("mouseout", onCanvasMouseOut);
     }
 }
 
@@ -254,7 +253,7 @@ function onCanvasMouseMove(ev) {
 function onCanvasMouseUp(ev) {
     gCanvas.removeEventListener("mousemove", onCanvasMouseMove);
     gCanvas.removeEventListener("mouseup", onCanvasMouseUp);
-    gCanvas.removeEventListener("mouseout", onCanvasMouseOut);
+    // gCanvas.removeEventListener("mouseout", onCanvasMouseOut);
 }
 
 function markLine(idx) {
